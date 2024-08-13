@@ -1,0 +1,14 @@
+services:
+  myDB:
+    image: 'postgres:latest'
+    container_name: cinesapiens_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=cinesapiens
+      - POSTGRES_PASSWORD=cinesapiens2024
+      - POSTGRES_DB=cinesapiens-db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+  
