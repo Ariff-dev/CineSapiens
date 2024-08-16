@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from db.user_funct import create_new_user, get_user
-from db.posts_funct import create_new_post, get_post
+from db.posts_funct import create_new_post, get_post, get_posts
 from db.comment_funct import create_new_comment, get_comment
 from app import app
 
@@ -42,11 +42,11 @@ def get_user_route():
     
     user = get_user(id_user)
     if user:
-        return jsonify({
+        return jsonify([{
             "id_user": user.id_user,
             "username": user.username,
             "email": user.email
-        }), 200
+        }]), 200
     else:
         return jsonify({'message': "User not found"}), 404
 
@@ -79,24 +79,40 @@ def create_post_route():
 
 @app.route('/get_post', methods=['GET'])
 def get_post_route():
-    data = request.get_json()
-
-    id_post_sa = data.get('id_post_sa')
+    id_post_sa = request.args.get('id_post_sa')
 
     if not id_post_sa:
-        return jsonify({'message': "Missing id_user parameter"}), 400
+        return jsonify({'message': "Missing id_post_sa parameter"}), 400
 
     post = get_post(id_post_sa)
 
-    if id_post_sa:
-        return jsonify({
+    if post:
+        return jsonify([{
             "id_post_sa": post.id_post_sa,
             "post_name": post.post_name,
-            "decription": post.post_description
-        }),200
+            "post_description": post.post_description  # Corrige el typo en la clave 'decription'
+        }]), 200
     else:
         return jsonify({'message': "Post not found"}), 404
-        
+    
+@app.route('/get_posts', methods=['GET'])
+def get_posts_route():
+    try:
+        posts = get_posts()
+        if posts is None:
+            return jsonify({"message": "Error retrieving posts"}), 500  # Error en la recuperación de posts
+        # Convierte los posts a una lista de diccionarios
+        posts_list = [{
+            "id_post_sa": post.id_post_sa,
+            "post_name": post.post_name,
+            "post_description": post.post_description
+        } for post in posts]
+        return jsonify(posts_list), 200  # 200 OK
+    except Exception as e:
+        print(f"Error in get_posts_route: {e}")
+        return jsonify({"message": "Internal Server Error"}), 500 
+    
+    
 
 #CommentPost
 @app.route('/create_comment_post', methods=['POST'])
@@ -139,9 +155,9 @@ def get_comments():
     comments = get_comment(id_post_sa)
 
     if comments:
-        return jsonify({
-            'comments': comments
-        }), 200
+        return jsonify([
+            comments
+        ]), 200
     else:
         return jsonify({'message': 'No comments found for this post.'}), 404
 

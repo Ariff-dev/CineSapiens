@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets'
+import BaseLayout from '../Layouts/BaseLayout.astro'
+import Logo from '../assets/images/preview-Photoroom.png'
+---
+
+<BaseLayout>
+  <main class='flex flex-col items-center mx-4 h-screen justify-center gap-12'>
+    <div>
+      <Image src={Logo} alt='logo' width={150} height={125} />
+    </div>
+    <div class='w-full flex flex-col gap-6 items-center p-2'>
+      <div class='text-center'>
+        <h1 class='text-2xl font-bold font-montserratAlternates'>
+          Iniciar Sesión
+        </h1>
+        <span class='text-sm font-bold'>Accede a tu cuenta</span>
+      </div>
+      <form action='' class='w-full flex flex-col gap-4'>
+        <div class='bg-color-component-1 p-3 rounded-md'>
+          <input
+            type='text'
+            placeholder='Email'
+            class='w-full bg-color-component-1 focus:outline-none placeholder:text-white placeholder:font-bold placeholder:text-sm placeholder:font-montserratAlternates'
+            '
+          />
+        </div>
+        <div class='bg-color-component-1 p-3 rounded-md'>
+          <input
+            type='password'
+            placeholder='Tu contraseña'
+            class='w-full bg-color-component-1 focus:outline-none placeholder:text-white placeholder:font-bold placeholder:text-sm placeholder:font-montserratAlternates'
+          />
+        </div>
+        <div class='bg-color-component-3 rounded-md p-2'>
+          <button
+            class='flex justify-center items-center text-center w-full h-full'
+          >
+            <p class='text-sm font-bold text-center font-montserratAlternates'>
+              Ingresar
+            </p>
+          </button>
+        </div>
+      </form>
+      <div class='flex gap-1 text-xs text-white font-bold'>
+        <p>¿No tienes cuenta</p>
+        <a href='/singup' class='underline text-text-anchord'>Crear cuenta</a>
+      </div>
+    </div>
+    <div class='text-2xl font-bold pt-12'>CineSapiens</div>
+  </main>
+</BaseLayout>

@@ -23,3 +23,13 @@ def get_post(id_post_sa):
     except Exception as e:
         print(f"Error retrieving post {e}")
         return None
+    
+
+def get_posts():
+    try:
+        #Consulta todos los posts
+        posts = PostSapiens.query.all()
+        return posts
+    except Exception as e:
+        print(f"Error retrieving posts {e}")
+        return None
